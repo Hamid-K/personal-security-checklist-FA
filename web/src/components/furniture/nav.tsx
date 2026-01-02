@@ -13,6 +13,7 @@ export default component$(() => {
 
   const data = useContext(ChecklistContext);
   const { t, locale } = useTranslations();
+  const deleteConfirm = t('nav.deleteConfirm');
 
   const { theme, setTheme } = useTheme();
 
@@ -24,7 +25,7 @@ export default component$(() => {
   ];
 
     const deleteAllData = $(() => {
-    const isConfirmed = confirm(t('nav.deleteConfirm'));
+    const isConfirmed = confirm(deleteConfirm);
     if (isConfirmed) {
       localStorage.clear();
       location.reload();

@@ -18,6 +18,21 @@ export default component$(() => {
   // All checklist data, from store
   const checklists = useContext(ChecklistContext);
   const { t } = useTranslations();
+  const copy = {
+    noStatsTitle: t('progress.noStatsTitle'),
+    noStatsBody: t('progress.noStatsBody'),
+    noStatsCta: t('progress.noStatsCta'),
+    yourProgress: t('progress.yourProgress'),
+    completedOutOf: t('progress.completedOutOf'),
+    essential: t('progress.essential'),
+    optional: t('progress.optional'),
+    advanced: t('progress.advanced'),
+    nextUp: t('progress.nextUp'),
+    recommendedDirectory: t('progress.recommendedDirectory'),
+    completedTooltip: t('progress.completedTooltip'),
+    sectionCompletedTooltip: t('progress.sectionCompletedTooltip'),
+    close: t('nav.close'),
+  };
   // Completed items, from local storage
   const [checkedItems] = useLocalStorage('PSC_PROGRESS', {});
   // Ignored items, from local storage
@@ -202,9 +217,9 @@ export default component$(() => {
     // Asynchronously build data for each priority level
     const buildDataForPriority = (priority: Priority, color: string) => {
       const priorityLabels: Record<Priority, string> = {
-        essential: t('progress.essential'),
-        optional: t('progress.optional'),
-        advanced: t('progress.advanced'),
+        essential: copy.essential,
+        optional: copy.optional,
+        advanced: copy.advanced,
       };
       return Promise.all(sections.map(section => calculatePercentage(section, priority)))
         .then(data => ({
@@ -269,9 +284,12 @@ export default component$(() => {
               },
               tooltip: {
                 callbacks: {
-                  label: (ctx) => t('progress.completedTooltip', {
-                    percent: Math.round(ctx.parsed.r),
-                    label: ctx.dataset.label || '',
+                  label: (ctx) => copy.completedTooltip.replace(/\{(\w+)\}/g, (_, name) => {
+                    const values = {
+                      percent: Math.round(ctx.parsed.r),
+                      label: ctx.dataset.label || '',
+                    };
+                    return String(values[name as keyof typeof values] ?? '');
                   }),
                 }
               }
@@ -284,9 +302,9 @@ export default component$(() => {
   }));
 
   const items = [
-    { id: 'essential-container', label: t('progress.essential') },
-    { id: 'optional-container', label: t('progress.optional') },
-    { id: 'advanced-container', label: t('progress.advanced') },
+    { id: 'essential-container', label: copy.essential },
+    { id: 'optional-container', label: copy.optional },
+    { id: 'advanced-container', label: copy.advanced },
   ];
 
   // Beware, some god-awful markup ahead (thank Tailwind for that!)
@@ -300,21 +318,24 @@ export default component$(() => {
         <button
           class="absolute top-1 right-1 btn btn-sm opacity-50"
           onClick$={() => setIgnoreDialog(true)}
-          >{t('nav.close')}</button>
-        <p class="text-xl block text-center font-bold">{t('progress.noStatsTitle')}</p>
-        <p class="w-md text-start my-2">{t('progress.noStatsBody')}</p>
-        <p class="w-md text-start my-2">{t('progress.noStatsCta')}</p>
+          >{copy.close}</button>
+        <p class="text-xl block text-center font-bold">{copy.noStatsTitle}</p>
+        <p class="w-md text-start my-2">{copy.noStatsBody}</p>
+        <p class="w-md text-start my-2">{copy.noStatsCta}</p>
       </div>
     )}
 
     <div class="flex justify-center flex-col items-center gap-6">
       {/* Progress Percent */}
       <div class="rounded-box bg-front shadow-md w-96 p-4">
-        <h3 class="text-primary text-2xl">{t('progress.yourProgress')}</h3>
+        <h3 class="text-primary text-2xl">{copy.yourProgress}</h3>
         <p class="text-lg">
-          {t('progress.completedOutOf', {
-            completed: totalProgress.value.completed,
-            outOf: totalProgress.value.outOf,
+          {copy.completedOutOf.replace(/\{(\w+)\}/g, (_, name) => {
+            const values = {
+              completed: totalProgress.value.completed,
+              outOf: totalProgress.value.outOf,
+            };
+            return String(values[name as keyof typeof values] ?? '');
           })}
         </p>
         <progress
@@ -338,9 +359,9 @@ export default component$(() => {
       </div>
       {/* Something ??? */}
       <div class="p-4 rounded-box bg-front shadow-md w-96 flex-grow">
-        <p class="text-sm opacity-80 mb-2">{t('progress.nextUp')}</p>
+        <p class="text-sm opacity-80 mb-2">{copy.nextUp}</p>
         <p class="text-lg">
-          {t('progress.recommendedDirectory')}{' '}
+          {copy.recommendedDirectory}{' '}
           <a class="link link-secondary font-bold" href="https://awesome-privacy.xyz">awesome-privacy.xyz</a>
         </p>
       </div>
@@ -363,9 +384,12 @@ export default component$(() => {
                     'my-2 w-80 flex justify-between items-center tooltip transition',
                     `hover:text-${section.color}-400`
                   ]}
-                  data-tip={t('progress.sectionCompletedTooltip', {
-                    percent: sectionCompletion.value[index],
-                    count: section.checklist.length,
+                  data-tip={copy.sectionCompletedTooltip.replace(/\{(\w+)\}/g, (_, name) => {
+                    const values = {
+                      percent: sectionCompletion.value[index],
+                      count: section.checklist.length,
+                    };
+                    return String(values[name as keyof typeof values] ?? '');
                   })}
                 >
                 <p class="text-sm m-0 flex items-center text-start gap-1 text-nowrap overflow-hidden max-w-40">
