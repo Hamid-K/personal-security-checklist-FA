@@ -1,6 +1,6 @@
 // src/routes/articles/[slug].tsx
 import { component$, Resource, useResource$, useStore } from '@builder.io/qwik';
-import { type DocumentHead, useLocation } from '@builder.io/qwik-city';
+import { type DocumentHead, type StaticGenerateHandler, useLocation } from '@builder.io/qwik-city';
 import { marked } from "marked";
 
 import articles from '~/data/articles';
@@ -113,6 +113,12 @@ export default component$(() => {
     />
   );
 });
+
+export const onStaticGenerate: StaticGenerateHandler = async () => {
+  return {
+    params: articles.map((article) => ({ slug: article.slug })),
+  };
+};
 
 export const head: DocumentHead = {
   title: "Article | Digital Defense",

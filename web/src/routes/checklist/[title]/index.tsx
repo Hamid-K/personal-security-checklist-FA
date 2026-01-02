@@ -1,10 +1,13 @@
 import { component$, useContext } from '@builder.io/qwik';
-import { useLocation } from '@builder.io/qwik-city';
+import { type StaticGenerateHandler, useLocation } from '@builder.io/qwik-city';
 import { marked } from 'marked';
+import jsyaml from 'js-yaml';
+import path from 'node:path';
+import fs from 'node:fs/promises';
 
 import Icon from '~/components/core/icon';
 import { ChecklistContext } from '~/store/checklist-context';
-import type { Section } from "~/types/PSC";
+import type { Section, Sections } from "~/types/PSC";
 import Table from '~/components/psc/checklist-table';
 import { useTranslations } from '~/i18n/use-translations';
 
@@ -54,3 +57,18 @@ export default component$(() => {
     </div>
   );
 });
+
+export const onStaticGenerate: StaticGenerateHandler = async () => {
+  try {
+    const filePath = path.resolve(process.cwd(), '../personal-security-checklist.yml');
+    const raw = await fs.readFile(filePath, 'utf8');
+    const data = jsyaml.load(raw) as Sections;
+    const params = Array.isArray(data)
+      ? data.map((section) => ({ title: section.slug }))
+      : [];
+    return { params };
+  } catch (error) {
+    console.log(error);
+    return { params: [] };
+  }
+};
