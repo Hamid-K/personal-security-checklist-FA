@@ -14,6 +14,7 @@ export default component$(() => {
   const data = useContext(ChecklistContext);
   const { t, locale } = useTranslations();
   const deleteConfirm = t('nav.deleteConfirm');
+  const sections = Array.isArray(data.value) ? data.value : [];
 
   const { theme, setTheme } = useTheme();
 
@@ -56,7 +57,7 @@ export default component$(() => {
                   {t('nav.checklists')}
                 </summary>
                 <ul class="p-2 bg-base-100 rounded-t-none z-10">
-                  {data.value.map((item: Section, index: number) => (
+                  {sections.map((item: Section, index: number) => (
                     <li key={`checklist-nav-${index}`} class={`hover:bg-${item.color}-600 hover:bg-opacity-15`}>
                       <a href={`/checklist/${item.slug}`}>
                       <Icon color={item.color} class="mr-2" icon={item.icon} width={16} height={16}  />
@@ -115,7 +116,7 @@ export default component$(() => {
           <li>
             <a href="/checklist"><Icon class="mr-2" icon="all" width={16} height={16} />{t('nav.checklists')}</a>
             <ul>
-              {data.value.map((item: Section, index: number) => (
+              {sections.map((item: Section, index: number) => (
               <li key={`checklist-side-${index}`} class={`hover:bg-${item.color}-600 hover:bg-opacity-15`}>
                 <a href={`/checklist/${item.slug}`}>
                 <Icon color={item.color} class="mr-2" icon={item.icon} width={16} height={16}  />

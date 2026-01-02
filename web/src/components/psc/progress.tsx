@@ -18,6 +18,7 @@ export default component$(() => {
   // All checklist data, from store
   const checklists = useContext(ChecklistContext);
   const { t } = useTranslations();
+  const sections = Array.isArray(checklists.value) ? checklists.value : [];
   const copy = {
     noStatsTitle: t('progress.noStatsTitle'),
     noStatsBody: t('progress.noStatsBody'),
@@ -146,7 +147,7 @@ export default component$(() => {
    * @param color - The color override for the chart
    */
   const makeDataAndDrawChart = $((priority: Priority, color?: string) => {
-    filterByPriority(checklists.value, priority)
+    filterByPriority(sections, priority)
     .then((sections: Sections) => {
       calculateProgress(sections)
         .then((progress) => {
@@ -163,7 +164,7 @@ export default component$(() => {
    */
   useOnWindow('load', $(() => {
 
-    calculateProgress(checklists.value)
+    calculateProgress(sections)
       .then((progress) => {
         totalProgress.value = progress;
     })
@@ -178,7 +179,7 @@ export default component$(() => {
    * Calculates the percentage of completion for each section
    */
   useOnWindow('load', $(async () => {
-    sectionCompletion.value = await Promise.all(checklists.value.map(section => {
+    sectionCompletion.value = await Promise.all(sections.map(section => {
       return calculateProgress([section]).then(
         (progress) => Math.round(progress.completed / progress.outOf * 100)
       );
@@ -246,7 +247,7 @@ export default component$(() => {
   useOnWindow('load', $(() => {
     Chart.register(...registerables);
 
-    makeRadarData(checklists.value).then((data) => {
+    makeRadarData(sections).then((data) => {
       if (radarChart.value) {
         new Chart(radarChart.value, {
           type: 'radar',
@@ -376,7 +377,7 @@ export default component$(() => {
       {/* Remaining Tasks */}
       <div class="p-4 rounded-box bg-front shadow-md w-96 flex-grow">
         <ul>
-          { checklists.value.map((section: Section, index: number) => (
+          { sections.map((section: Section, index: number) => (
               <li key={index}>
                 <a
                   href={`/checklist/${section.slug}`}
