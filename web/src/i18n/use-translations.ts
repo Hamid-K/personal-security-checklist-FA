@@ -3,7 +3,7 @@ import { useContext } from '@builder.io/qwik';
 import { LocaleContext } from '~/store/locale-context';
 import { translations, type Locale } from './translations';
 
-const getValue = (locale: Locale, key: string) => {
+const getValue = (locale: Locale, key: string): string | string[] | undefined => {
   return key.split('.').reduce((acc: any, part: string) => acc?.[part], translations[locale]);
 };
 

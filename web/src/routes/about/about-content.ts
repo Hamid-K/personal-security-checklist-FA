@@ -17,7 +17,7 @@ const aboutContent: Record<Locale, {
     ],
     contributing: [
       'This project is only possible thanks to contributors like you!',
-      'You can make changes to any of the checklist content, by editing [\`personal-security-checklist.yml\`](https://github.com/Lissy93/personal-security-checklist/blob/master/personal-security-checklist.yml).',
+      'You can make changes to any of the checklist content, by editing [`personal-security-checklist.yml`](https://github.com/Lissy93/personal-security-checklist/blob/master/personal-security-checklist.yml).',
     ],
     projects: [
       {
@@ -77,7 +77,7 @@ const aboutContent: Record<Locale, {
     ],
     contributing: [
       'این پروژه فقط به لطف مشارکت کنندگانی مثل شما ممکن است!',
-      'می توانید با ویرایش [\`personal-security-checklist.yml\`](https://github.com/Lissy93/personal-security-checklist/blob/master/personal-security-checklist.yml) در محتوای چک لیست تغییر ایجاد کنید.',
+      'می توانید با ویرایش [`personal-security-checklist.yml`](https://github.com/Lissy93/personal-security-checklist/blob/master/personal-security-checklist.yml) در محتوای چک لیست تغییر ایجاد کنید.',
     ],
     projects: [
       {
@@ -132,7 +132,7 @@ const aboutContent: Record<Locale, {
   },
 };
 
-export const getAboutContent = (locale: Locale) => aboutContent[locale] || aboutContent.en;
+export const getAboutContent = (locale: Locale) => aboutContent[locale];
 
 export const socials = [
   {
