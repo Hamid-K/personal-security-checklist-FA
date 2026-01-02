@@ -1,12 +1,14 @@
 // src/routes/_404.tsx
 import { component$ } from '@builder.io/qwik';
+import { useTranslations } from '~/i18n/use-translations';
 
 export default component$(() => {
+  const { t } = useTranslations();
   return (
     <div>
-      <h1>404 Not Found</h1>
-      <p>The page you're looking for doesn't exist.</p>
-      <a href="/">Go back to the homepage</a>
+      <h1>{t('notFound.title')}</h1>
+      <p>{t('notFound.message')}</p>
+      <a href="/">{t('notFound.back')}</a>
     </div>
   );
 });

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@900&family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@900&family=Poppins&family=Vazirmatn:wght@400;600;700&display=swap');
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Catamaran', sans-serif;
@@ -6,4 +6,21 @@ h1, h2, h3, h4, h5, h6 {
 
 p, a, li, span {
   font-family: 'Poppins', sans-serif;
+}
+
+html[lang="fa"] h1,
+html[lang="fa"] h2,
+html[lang="fa"] h3,
+html[lang="fa"] h4,
+html[lang="fa"] h5,
+html[lang="fa"] h6,
+html[lang="fa"] p,
+html[lang="fa"] a,
+html[lang="fa"] li,
+html[lang="fa"] span {
+  font-family: 'Vazirmatn', sans-serif;
+}
+
+html[dir="rtl"] body {
+  direction: rtl;
 }

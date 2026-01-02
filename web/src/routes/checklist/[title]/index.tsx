@@ -6,10 +6,12 @@ import Icon from '~/components/core/icon';
 import { ChecklistContext } from '~/store/checklist-context';
 import type { Section } from "~/types/PSC";
 import Table from '~/components/psc/checklist-table';
+import { useTranslations } from '~/i18n/use-translations';
 
 export default component$(() => {
 
   const checklists = useContext(ChecklistContext);
+  const { t } = useTranslations();
 
   const loc = useLocation();
   const slug = loc.params.title;
@@ -36,8 +38,8 @@ export default component$(() => {
 
       {section && section.softwareLinks && (
         <>
-        <div class="divider my-4">Useful Links</div>
-        <h3 class="text-xl my-2">Recommended Software</h3>
+        <div class="divider my-4">{t('checklist.usefulLinks')}</div>
+        <h3 class="text-xl my-2">{t('checklist.recommendedSoftware')}</h3>
           <ul class="list-disc pl-4">
           {section.softwareLinks.map((link, index) => (
             <li key={index}>
@@ -52,4 +54,3 @@ export default component$(() => {
     </div>
   );
 });
-

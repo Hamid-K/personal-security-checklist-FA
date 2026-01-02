@@ -5,6 +5,8 @@ import jsyaml from "js-yaml";
 import Navbar from "~/components/furniture/nav";
 import Footer from "~/components/furniture/footer";
 import { ChecklistContext } from "~/store/checklist-context";
+import { LocaleContext } from "~/store/locale-context";
+import { useLocale } from "~/store/locale-store";
 import type { Sections } from "~/types/PSC";
 
 export const useChecklists = routeLoader$(async () => {
@@ -25,6 +27,8 @@ export const onGet: RequestHandler = async ({ cacheControl }) => {
 export default component$(() => {
   const checklists = useChecklists();
   useContextProvider(ChecklistContext, checklists);
+  const localeStore = useLocale();
+  useContextProvider(LocaleContext, localeStore);
 
   return (
     <>

@@ -4,10 +4,12 @@ import { ChecklistContext } from '~/store/checklist-context';
 import { useLocalStorage } from "~/hooks/useLocalStorage";
 import { useChecklist } from '~/store/local-checklist-store';
 import type { Section } from "~/types/PSC";
+import { useTranslations } from "~/i18n/use-translations";
 
 export default component$(() => {
   const checklists = useContext(ChecklistContext);
   const localChecklist = useChecklist();
+  const { t } = useTranslations();
 
   const [completed, setCompleted] = useLocalStorage('PSC_PROGRESS', {});
 
@@ -47,7 +49,7 @@ export default component$(() => {
               <div class="card-actions justify-end">
                 <a href={`/checklist/${section.slug}`}>
                   <button class={`btn text-base-100 bg-${section.color}-400 hover:bg-${section.color}-600`}>
-                    View Full Checklist ➜
+                    {t('checklist.viewFull')}
                   </button>
                 </a>
               </div>

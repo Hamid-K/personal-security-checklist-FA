@@ -2,10 +2,13 @@ import { component$, useResource$, Resource } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 
 import Icon from "~/components/core/icon";
-import { projects, socials, intro, contributing, license } from './about-content';
+import { getAboutContent, socials, license } from './about-content';
 import { marked } from "marked";
+import { useTranslations } from "~/i18n/use-translations";
 
 export default component$(() => {
+  const { t, locale } = useTranslations();
+  const { intro, contributing, projects } = getAboutContent(locale.value);
 
   interface Contributor {
     login: string;
@@ -42,7 +45,7 @@ export default component$(() => {
   return (
     <div class="m-4 md:mx-16">
       <article class="bg-back p-8 mx-auto max-w-[1200px] m-8 rounded-lg shadow-md">
-        <h2 class="text-3xl mb-2">About the Security Checklist</h2>
+        <h2 class="text-3xl mb-2">{t('about.title')}</h2>
         {intro.map((paragraph, index) => (
           <p class="mb-2" key={index}>{paragraph}</p>
         ))}        
@@ -50,7 +53,7 @@ export default component$(() => {
       <div class="divider"></div>
 
       <article class="bg-back p-8 mx-auto max-w-[1200px] m-8 rounded-lg shadow-md">
-        <h2 class="text-3xl mb-2">Contributing</h2>
+        <h2 class="text-3xl mb-2">{t('about.contributing')}</h2>
         {contributing.map((paragraph, index) => (
           <p class="mb-2" key={index} dangerouslySetInnerHTML={parseMarkdown(paragraph)}></p>
         ))}        
@@ -58,19 +61,19 @@ export default component$(() => {
       <div class="divider"></div>
 
       <article class="bg-back p-8 mx-auto max-w-[1200px] m-8 rounded-lg shadow-md">
-        <h2 class="text-3xl mb-2">Acknowledgments</h2>
+        <h2 class="text-3xl mb-2">{t('about.acknowledgments')}</h2>
 
 
-        <h3 class="text-2xl mb-2">Sponsors</h3>
+        <h3 class="text-2xl mb-2">{t('about.sponsors')}</h3>
 
         <p>
-          Huge thanks to the following sponsors, for their ongoing support 💖
+          {t('about.sponsorsThanks')}
         </p>
 
         <div class="flex flex-wrap gap-4 my-4 mx-auto">
           <Resource
               value={sponsorsResource}
-              onPending={() => <p>Loading...</p>}
+              onPending={() => <p>{t('misc.loading')}</p>}
               onResolved={(contributors: Contributor[]) => (
                 contributors.map((contributor: Contributor) => (
                   <a
@@ -98,15 +101,15 @@ export default component$(() => {
 
         <div class="divider"></div>
 
-        <h3 class="text-2xl mb-2">Contributors</h3>
+        <h3 class="text-2xl mb-2">{t('about.contributors')}</h3>
         <p>
-          This project exists thanks to all the people who've helped build and maintain it.<br />
-          Special thanks to the below, top-100 contributors 🌟
+          {t('about.contributorsThanks')}<br />
+          {t('about.contributorsSpecialThanks')}
         </p>
         <div class="flex flex-wrap gap-4 my-4 mx-auto">
           <Resource
             value={contributorsResource}
-            onPending={() => <p>Loading...</p>}
+            onPending={() => <p>{t('misc.loading')}</p>}
             onResolved={(contributors: Contributor[]) => (
               contributors.map((contributor: Contributor) => (
                 <a
@@ -136,11 +139,11 @@ export default component$(() => {
       <div class="divider"></div>
 
       <article class="bg-back p-8 mx-auto max-w-[1200px] my-8 rounded-lg shadow-md">
-        <h2 class="text-3xl mb-2" id="author">About the Author</h2>
+        <h2 class="text-3xl mb-2" id="author">{t('about.author')}</h2>
           <p>
-            This project was originally started by
-            me, <a href="https://aliciasykes.com" class="link link-primary">Alicia Sykes</a>
-            - with a lot of help from the community.
+            {t('about.authorIntro')}{' '}
+            <a href="https://aliciasykes.com" class="link link-primary">Alicia Sykes</a>
+            - {t('about.authorHelp')}
           </p>
           <br />
           <div class="ml-4 float-right">
@@ -156,12 +159,12 @@ export default component$(() => {
             </div>
           </div>
           <p class="text-lg italic font-thin">
-            I write apps which aim to help people <b>escape big tech, secure their data, and protect their privacy</b>.
+            {t('about.authorTagline')}
           </p>
           <br />
           <p>
-            I have a particular interest in self-hosting, Linux, security and OSINT.<br />
-            So if this type of stuff interests you, check out these other projects:
+            {t('about.authorInterests')}<br />
+            {t('about.authorProjectsLead')}
           </p>
           <ul class="list-disc pl-8">
             {
@@ -177,9 +180,10 @@ export default component$(() => {
           </ul>
           <br />
           <p>
-            For a more open source apps I've published,
-            see <a href="https://apps.aliciasykes.com/" class="link link-primary">apps.aliciasykes.com</a>,
-            or <a href="https://github.com/lissy93" class="link link-primary">follow me on GitHub</a>
+            {t('about.authorMoreApps')}{' '}
+            <a href="https://apps.aliciasykes.com/" class="link link-primary">apps.aliciasykes.com</a>,
+            {locale.value === 'fa' ? ' یا ' : ' or '}
+            <a href="https://github.com/lissy93" class="link link-primary">follow me on GitHub</a>
           </p>
 
       </article>
@@ -187,7 +191,7 @@ export default component$(() => {
       <div class="divider"></div>
 
       <article class="bg-back p-8 mx-auto max-w-[1200px] m-8 rounded-lg shadow-md">
-        <h2 class="text-3xl mb-2">License</h2>
+        <h2 class="text-3xl mb-2">{t('about.license')}</h2>
         <p>
           This project is split-licensed, with the checklist content (located
           in <a class="link" href="https://github.com/Lissy93/personal-security-checklist/blob/HEAD/personal-security-checklist.yml">
@@ -202,17 +206,14 @@ export default component$(() => {
         </pre>
         <details class="collapse">
           <summary class="collapse-title">
-            <h3 class="mt-2">What does this means for you?</h3>
+            <h3 class="mt-2">{t('about.licenseSummaryTitle')}</h3>
           </summary>
           <div class="collapse-content">
             <p class="mb-2">
-              This means that for everything (except the checklist YAML file), you have almost unlimited freedom to
-              use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of this software.
-              All that we ask is that you include the original copyright notice and permission notice in any copies of the software
+              {t('about.licenseSummaryBody')}
             </p>
             <p class="mb-2">
-              And for the security-list content you can share and adapt this content as long as you give appropriate credit,
-              don't use it for commercial purposes, and distribute your contributions under the same license.
+              {t('about.licenseSummaryBody2')}
             </p>
           </div>
         </details>

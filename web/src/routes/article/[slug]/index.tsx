@@ -4,12 +4,14 @@ import { type DocumentHead, useLocation } from '@builder.io/qwik-city';
 import { marked } from "marked";
 
 import articles from '~/data/articles';
+import { useTranslations } from '~/i18n/use-translations';
 
 import styles from './article.module.css';
 
 export default component$(() => {
   const location = useLocation();
   const store = useStore({ article: null, notFound: false });
+  const { t, locale } = useTranslations();
 
   const slug = location.params.slug;
   const article = articles.find(a => a.slug === slug);
@@ -80,7 +82,7 @@ export default component$(() => {
   });
 
   if (store.notFound) {
-    return <div>404 Article Not Found</div>;
+    return <div>{t('articles.notFound')}</div>;
   }
 
   return (
@@ -101,7 +103,7 @@ export default component$(() => {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
-            <span><b>Warning</b>: {article.warningMessage}</span>
+            <span><b>{t('articles.warning')}</b>: {article.warningMessage[locale.value] || article.warningMessage.en}</span>
           </div>
           )}
 
@@ -121,4 +123,3 @@ export const head: DocumentHead = {
     },
   ],
 };
-

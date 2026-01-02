@@ -5,10 +5,12 @@ import Icon from "~/components/core/icon";
 import type { Priority, Section, Checklist } from '../../types/PSC';
 import { marked } from "marked";
 import { useLocalStorage } from "~/hooks/useLocalStorage";
+import { useTranslations } from "~/i18n/use-translations";
 import styles from './psc.module.css';
 
 
 export default component$((props: { section: Section }) => {
+  const { t } = useTranslations();
 
   const [completed, setCompleted] = useLocalStorage('PSC_PROGRESS', {});
   const [ignored, setIgnored] = useLocalStorage('PSC_IGNORED', {});
@@ -46,6 +48,19 @@ export default component$((props: { section: Section }) => {
 
   const generateId = (title: string) => {
     return title.toLowerCase().replace(/ /g, '-');
+  };
+
+  const getPriorityLabel = (priority: string) => {
+    switch (priority.toLowerCase()) {
+      case 'essential':
+        return t('filters.essential');
+      case 'optional':
+        return t('filters.optional');
+      case 'advanced':
+        return t('filters.advanced');
+      default:
+        return priority;
+    }
   };
 
   const parseMarkdown = (text: string | undefined): string => {
@@ -151,20 +166,25 @@ export default component$((props: { section: Section }) => {
       <div>
         <progress class="progress w-64" value={percent} max="100"></progress>
         <p class="text-xs text-center">
-          {done} out of {total} ({percent}%)
-          complete, {disabled} ignored</p>
+          {t('filters.progressSummary', {
+            done,
+            total,
+            percent,
+            disabled,
+          })}
+        </p>
       </div>
 
       <div class="flex flex-wrap gap-2 justify-end my-4">
         {(sortState.column || JSON.stringify(filterState) !== JSON.stringify(originalFilters)) && (
           <button class="btn btn-sm hover:btn-primary" onClick$={resetFilters}>
             <Icon width={18} height={16} icon="clear"/>
-            Reset Filters
+            {t('filters.reset')}
           </button>
         )}
         <button class="btn btn-sm hover:btn-primary" onClick$={() => { showFilters.value = !showFilters.value; }}>
           <Icon width={18} height={16} icon="filters"/>
-          {showFilters.value ? 'Hide' : 'Show'} Filters
+          {showFilters.value ? t('filters.hideFilters') : t('filters.showFilters')}
         </button>
       </div>
     </div>
@@ -174,28 +194,28 @@ export default component$((props: { section: Section }) => {
         style={{ opacity: stage.value === "enterTo" ? 1 : 0, height: stage.value === "enterTo" ? 'auto' : 0 }}> 
         {/* Filter by completion */}
         <div class="flex justify-end items-center gap-1">
-          <p class="font-bold text-sm">Show</p>
+          <p class="font-bold text-sm">{t('filters.show')}</p>
           <label onClick$={() => (filterState.show = 'all')}
             class="p-2 rounded hover:bg-front transition-all cursor-pointer flex gap-2">
-            <span class="text-sm">All</span> 
+            <span class="text-sm">{t('filters.all')}</span> 
             <input type="radio" name="show" class="radio radio-sm checked:radio-info" checked />
           </label>
           <label onClick$={() => (filterState.show = 'remaining')}
             class="p-2 rounded hover:bg-front transition-all cursor-pointer flex gap-2">
-            <span class="text-sm">Remaining</span> 
+            <span class="text-sm">{t('filters.remaining')}</span> 
             <input type="radio" name="show" class="radio radio-sm checked:radio-error" />
           </label>
           <label onClick$={() => (filterState.show = 'completed')}
             class="p-2 rounded hover:bg-front transition-all cursor-pointer flex gap-2">
-            <span class="text-sm">Completed</span> 
+            <span class="text-sm">{t('filters.completed')}</span> 
             <input type="radio" name="show" class="radio radio-sm checked:radio-success" />
           </label>
         </div>
         {/* Filter by level */}
         <div class="flex justify-end items-center gap-1">
-          <p class="font-bold text-sm">Filter</p>
+          <p class="font-bold text-sm">{t('filters.filter')}</p>
           <label class="p-2 rounded hover:bg-front transition-all cursor-pointer flex gap-2">
-            <span class="text-sm">Basic</span> 
+            <span class="text-sm">{t('filters.essential')}</span> 
             <input
               type="checkbox"
               checked={filterState.levels.essential}
@@ -204,7 +224,7 @@ export default component$((props: { section: Section }) => {
             />
           </label>
           <label class="p-2 rounded hover:bg-front transition-all cursor-pointer flex gap-2">
-            <span class="text-sm">Optional</span> 
+            <span class="text-sm">{t('filters.optional')}</span> 
             <input
               type="checkbox"
               checked={filterState.levels.optional}
@@ -214,7 +234,7 @@ export default component$((props: { section: Section }) => {
           </label>
           <label
             class="p-2 rounded hover:bg-front transition-all cursor-pointer flex gap-2">
-            <span class="text-sm">Advanced</span> 
+            <span class="text-sm">{t('filters.advanced')}</span> 
             <input
               type="checkbox"
               checked={filterState.levels.advanced}
@@ -230,9 +250,9 @@ export default component$((props: { section: Section }) => {
       <thead>
         <tr>
           { [
-            { id: 'done', text: 'Done?'},
-            { id: 'advice', text: 'Advice' },
-            { id: 'level', text: 'Level' }
+            { id: 'done', text: t('filters.done')},
+            { id: 'advice', text: t('filters.advice') },
+            { id: 'level', text: t('filters.level') }
           ].map((item) => (
             <th
               key={item.id}
@@ -245,7 +265,7 @@ export default component$((props: { section: Section }) => {
               </span>
             </th>
           ))}
-          <th>Details</th>
+          <th>{t('filters.details')}</th>
         </tr>
       </thead>
       <tbody>
@@ -274,7 +294,7 @@ export default component$((props: { section: Section }) => {
                     setCompleted(data);
                   }}
                 />
-                <label for={`ignore-${itemId}`} class="text-small block opacity-50 mt-2">Ignore</label>
+                <label for={`ignore-${itemId}`} class="text-small block opacity-50 mt-2">{t('filters.ignore')}</label>
                 <input
                   type="checkbox"
                   id={`ignore-${itemId}`}
@@ -300,7 +320,7 @@ export default component$((props: { section: Section }) => {
               </td>
               <td>
                 <div class={`badge gap-2 badge-${badgeColor}`}>
-                  {item.priority}
+                  {getPriorityLabel(item.priority)}
                 </div>
               </td>
               <td class={styles.checklistItemDescription} dangerouslySetInnerHTML={parseMarkdown(item.details)}></td>
