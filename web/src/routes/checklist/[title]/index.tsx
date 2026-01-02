@@ -2,8 +2,7 @@ import { component$, useContext } from '@builder.io/qwik';
 import { type StaticGenerateHandler, useLocation } from '@builder.io/qwik-city';
 import { marked } from 'marked';
 import jsyaml from 'js-yaml';
-import path from 'node:path';
-import fs from 'node:fs/promises';
+import checklistYaml from '../../../../public/personal-security-checklist.yml?raw';
 
 import Icon from '~/components/core/icon';
 import { ChecklistContext } from '~/store/checklist-context';
@@ -60,9 +59,7 @@ export default component$(() => {
 
 export const onStaticGenerate: StaticGenerateHandler = async () => {
   try {
-    const filePath = path.resolve(process.cwd(), '../personal-security-checklist.yml');
-    const raw = await fs.readFile(filePath, 'utf8');
-    const data = jsyaml.load(raw) as Sections;
+    const data = jsyaml.load(checklistYaml) as Sections;
     const params = Array.isArray(data)
       ? data.map((section) => ({ title: section.slug }))
       : [];
