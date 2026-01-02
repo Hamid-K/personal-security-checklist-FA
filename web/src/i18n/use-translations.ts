@@ -11,7 +11,7 @@ export const useTranslations = () => {
   const { locale } = useContext(LocaleContext);
 
   const t = (key: string, vars?: Record<string, string | number>) => {
-    const template = (getValue(locale.value, key) ?? getValue('en', key) ?? key) as string;
+    const template = (getValue(locale.value, key) || getValue('en', key) || key) as string;
     if (!vars) return template;
     return template.replace(/\{(\w+)\}/g, (_, name) => String(vars[name] ?? ''));
   };
