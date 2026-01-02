@@ -289,7 +289,7 @@ export default component$(() => {
                       percent: Math.round(ctx.parsed.r),
                       label: ctx.dataset.label || '',
                     };
-                    return String(values[name as keyof typeof values] ?? '');
+                    return String(values[name as keyof typeof values] || '');
                   }),
                 }
               }
@@ -335,7 +335,7 @@ export default component$(() => {
               completed: totalProgress.value.completed,
               outOf: totalProgress.value.outOf,
             };
-            return String(values[name as keyof typeof values] ?? '');
+            return String(values[name as keyof typeof values] || '');
           })}
         </p>
         <progress
@@ -389,7 +389,7 @@ export default component$(() => {
                       percent: sectionCompletion.value[index],
                       count: section.checklist.length,
                     };
-                    return String(values[name as keyof typeof values] ?? '');
+                    return String(values[name as keyof typeof values] || '');
                   })}
                 >
                 <p class="text-sm m-0 flex items-center text-start gap-1 text-nowrap overflow-hidden max-w-40">
