@@ -32,18 +32,26 @@ jobs:
       - name: Build site
         working-directory: web
         run: yarn build.client
-      - name: Add SPA fallback
+      - name: Resolve output dir
         working-directory: web
         run: |
           if [ -f dist/index.html ]; then
-            cp dist/index.html dist/404.html
+            echo "OUTPUT_DIR=dist" >> "$GITHUB_ENV"
           elif [ -f dist/personal-security-checklist-FA/index.html ]; then
-            cp dist/personal-security-checklist-FA/index.html dist/404.html
+            echo "OUTPUT_DIR=dist/personal-security-checklist-FA" >> "$GITHUB_ENV"
+          else
+            echo "OUTPUT_DIR=dist" >> "$GITHUB_ENV"
+          fi
+      - name: Add SPA fallback
+        working-directory: web
+        run: |
+          if [ -f "$OUTPUT_DIR/index.html" ]; then
+            cp "$OUTPUT_DIR/index.html" "$OUTPUT_DIR/404.html"
           fi
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: web/dist
+          path: web/${{ env.OUTPUT_DIR }}
 
   deploy:
     runs-on: ubuntu-latest
