@@ -31,17 +31,10 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Build site
         working-directory: web
-        run: yarn build.client
-      - name: Normalize output dir
+        run: yarn build.client -- --outDir dist-pages
+      - name: Add SPA fallback
         working-directory: web
         run: |
-          rm -rf dist-pages
-          mkdir -p dist-pages
-          if [ -f dist/index.html ]; then
-            cp -R dist/* dist-pages/
-          elif [ -f dist/personal-security-checklist-FA/index.html ]; then
-            cp -R dist/personal-security-checklist-FA/* dist-pages/
-          fi
           if [ -f dist-pages/index.html ]; then
             cp dist-pages/index.html dist-pages/404.html
           fi
