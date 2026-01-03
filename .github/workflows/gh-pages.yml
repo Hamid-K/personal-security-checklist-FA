@@ -31,7 +31,10 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Build site
         working-directory: web
-        run: yarn build
+        run: yarn build.client
+      - name: Add SPA fallback
+        working-directory: web
+        run: cp dist/index.html dist/404.html
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
