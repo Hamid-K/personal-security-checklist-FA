@@ -38,7 +38,11 @@ jobs:
           if [ -f dist-pages/index.html ]; then
             cp dist-pages/index.html dist-pages/404.html
           fi
-      - name: Upload Pages artifact
+       - name: Add .nojekyll
+        working-directory: web
+        run: |
+          touch dist-pages/.nojekyll
+- name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: web/dist-pages
