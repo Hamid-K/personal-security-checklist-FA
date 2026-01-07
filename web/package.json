@@ -44,7 +44,8 @@
     "marked": "^12.0.0",
     "progressbar.js": "^1.1.1",
     "qwik-transition": "^0.0.7",
-    "sharp": "^0.32.6"
+    "sharp": "^0.32.6",
+    "fuse.js": "^6.6.2"
   },
   "resolutions": {
     "sharp": "^0.32.6"

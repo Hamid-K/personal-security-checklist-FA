@@ -1,0 +1,34 @@
+name: Sync Awesome Privacy Data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 2 * * 1" # weekly
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Fetch latest Awesome Privacy YAML
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/Hamid-K/awesome-privacy-FA/main/awesome-privacy.yml \
+            -o web/src/data/awesome-privacy.yml
+      - name: Install dependencies
+        working-directory: web
+        run: yarn install --frozen-lockfile
+      - name: Build site
+        working-directory: web
+        run: yarn build.static
+      - name: Commit and push data refresh
+        run: |
+          git config --global user.name "hamid-k"
+          git config --global user.email "hamid-k@users.noreply.github.com"
+          if git diff --quiet; then
+            echo "No changes detected."
+            exit 0
+          fi
+          git add web/src/data/awesome-privacy.yml
+          git commit -m "Sync Awesome Privacy data"
+          git push

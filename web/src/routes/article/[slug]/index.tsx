@@ -5,6 +5,7 @@ import { marked } from "marked";
 
 import articles from '~/data/articles';
 import { useTranslations } from '~/i18n/use-translations';
+import AwesomePrivacyArticle from '~/components/article/awesome-privacy';
 
 import styles from './article.module.css';
 
@@ -15,6 +16,10 @@ export default component$(() => {
 
   const slug = location.params.slug;
   const article = articles.find(a => a.slug === slug);
+
+  if (slug === 'awesome-privacy') {
+    return <AwesomePrivacyArticle />;
+  }
 
   // useDocumentHead(() => {
   //   if (!article) {
@@ -67,7 +72,8 @@ export default component$(() => {
   };
 
 
-  const articleResource = useResource$<string>(async () => {
+  const articleResource = useResource$<string>(async ({ track }) => {
+    track(() => locale.value);
     if (!article) {
       store.notFound = true;
       return '';

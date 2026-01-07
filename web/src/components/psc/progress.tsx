@@ -163,12 +163,15 @@ export default component$(() => {
    * When the window has loaded (client-side only)
    * Initiate the filtering, calculation and rendering of progress charts
    */
-  useVisibleTask$(() => {
+  useVisibleTask$(({ track }) => {
+    track(() => checklists.value);
+    track(() => checkedItems.value);
+    track(() => ignoredItems.value);
 
     calculateProgress(sections)
       .then((progress) => {
         totalProgress.value = progress;
-    })
+      });
 
     makeDataAndDrawChart('essential', 'hsl(var(--su, 158 64% 52%))');
     makeDataAndDrawChart('optional', 'hsl(var(--wa, 43 96% 56%))');
@@ -179,10 +182,17 @@ export default component$(() => {
   /**
    * Calculates the percentage of completion for each section
    */
-  useVisibleTask$(async () => {
+  useVisibleTask$(async ({ track }) => {
+    track(() => checklists.value);
+    track(() => checkedItems.value);
+    track(() => ignoredItems.value);
+
     sectionCompletion.value = await Promise.all(sections.map(section => {
       return calculateProgress([section]).then(
-        (progress) => Math.round(progress.completed / progress.outOf * 100)
+        (progress) => {
+          const percent = progress.outOf ? Math.round((progress.completed / progress.outOf) * 100) : 0;
+          return percent;
+        }
       );
     }));
   });

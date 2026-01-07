@@ -286,9 +286,7 @@ export default component$((props: { section: Section }) => {
                   checked={isChecked(itemId)}
                   disabled={isIgnored(itemId)}
                   onClick$={() => {
-                    const data = completed.value;
-                    data[itemId] = !data[itemId];
-                    setCompleted(data);
+                    setCompleted({ ...completed.value, [itemId]: !completed.value[itemId] });
                   }}
                 />
                 <label for={`ignore-${itemId}`} class="text-small block opacity-50 mt-2">{t('filters.ignore')}</label>
@@ -298,13 +296,8 @@ export default component$((props: { section: Section }) => {
                   class={`toggle toggle-xs toggle-${badgeColor}`}
                   checked={isIgnored(itemId)}
                   onClick$={() => {
-                    const ignoredData = ignored.value;
-                    ignoredData[itemId] = !ignoredData[itemId];
-                    setIgnored(ignoredData);
-
-                    const completedData = completed.value;
-                    completedData[itemId] = false;
-                    setCompleted(completedData);
+                    setIgnored({ ...ignored.value, [itemId]: !ignored.value[itemId] });
+                    setCompleted({ ...completed.value, [itemId]: false });
                   }}
                 />
               </td>
