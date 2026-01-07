@@ -55,3 +55,131 @@ html[dir="rtl"] .drawer-side .menu ul::before {
   right: 0;
   left: auto;
 }
+
+/* Mobile-first refinements */
+.progress-section {
+  gap: 1rem;
+  align-items: flex-start;
+}
+.progress-section .progress {
+  width: 120px;
+  height: 6px;
+}
+.progress-section .progress + p {
+  margin-top: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.section-link-grid {
+  width: 100%;
+}
+.section-link-grid .card {
+  min-height: 200px;
+}
+.section-link-grid .card-body {
+  padding: 1rem;
+}
+.section-link-grid .radial-progress {
+  position: static;
+  transform: none;
+}
+
+@media (max-width: 1024px) {
+  .hero .hero-content {
+    text-align: center;
+  }
+  .hero .hero-content p {
+    font-size: 1.05rem;
+  }
+  .hero .hero-content .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .progress-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 768px) {
+  main {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .drawer-side {
+    width: 100%;
+    max-width: 100%;
+  }
+  .drawer-side .menu {
+    padding-bottom: 3rem;
+    max-height: 100vh;
+  }
+  .drawer-side .menu li a {
+    font-size: 1rem;
+  }
+  .section-link-grid .card {
+    min-height: 160px;
+    padding: 0.75rem;
+  }
+  .section-link-grid .card h2 {
+    font-size: 1.8rem;
+  }
+  .progress-section .progress {
+    width: 100%;
+  }
+.progress-section .progress + p {
+  width: 100%;
+}
+  .hero .hero-content {
+    gap: 0.75rem;
+  }
+  .hero .hero-content .subtitle {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero .hero-content h1 {
+    font-size: clamp(2rem, 8vw, 2.5rem);
+  }
+  .awesome-privacy .hero {
+    padding: 1rem;
+  }
+  .hero .hero-content .github-link-wrap {
+    max-width: 100%;
+  }
+}
+
+.mobile-checklist {
+  width: 100%;
+}
+
+.mobile-section-card {
+  padding: 1.5rem;
+  background: var(--base-200);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+}
+
+.mobile-section-card .mobile-section-header h2 {
+  margin: 0;
+}
+
+.mobile-section-card .mobile-section-header p {
+  margin: 0;
+  max-width: 90%;
+}
+
+.mobile-section-card .mobile-section-progress p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.mobile-section-card .mobile-section-footer .btn {
+  border-radius: 999px;
+  padding: 0.75rem 1rem;
+}

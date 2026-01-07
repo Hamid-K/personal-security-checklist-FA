@@ -3,6 +3,7 @@ import { $, component$, useSignal, useVisibleTask$ } from "@builder.io/qwik";
 import { useLocalStorage } from "~/hooks/useLocalStorage";
 import type { Checklist, Section } from '~/types/PSC';
 import Icon from '~/components/core/icon';
+import MobileSectionCard from '~/components/psc/mobile-section-card';
 import { useTranslations } from '~/i18n/use-translations';
 import { withBase } from '~/utils/paths';
 import styles from './psc.module.css';
@@ -47,50 +48,61 @@ export default component$((props: { sections: Section[] }) => {
   });
 
   return (
-    <div class={[styles.container, 'grid',
-      'mx-auto mt-8 px-4 gap-7', 'xl:px-10 xl:max-w-7xl',
-      'transition-all', 'max-w-6xl w-full']}>
-      {props.sections.map((section: Section, index: number) => (                   
-        <a key={section.slug}
-          href={withBase(`checklist/${section.slug}/`)}
-          class={[
-            'card card-side bg-front bg-opacity-25 shadow-md transition-all px-2 outline-none',
-            'hover:outline hover:outline-10 hover:outline-offset-4 hover:bg-opacity-15',
-            `hover:outline-${section.color}-400 hover:bg-${section.color}-600`
-          ]}
-        >
-          <div class="flex-shrink-0 flex flex-col py-4 h-auto items-stretch justify-evenly">
-            <Icon icon={section.icon || 'star'} color={section.color} />
-            {(done.value && done.value[index]) ? (
-              <p class={`text-${section.color}-400 pt-2 pb-0 px-0 mx-0 my-0`}>
-                {done.value[index]}/{section.checklist.length} {t('sections.done')}
-              </p>
-            ) : (
-              <p class={`text-${section.color}-400 pt-2 pb-0 px-0 mx-0 my-0`}>
-                {section.checklist.length} {t('sections.items')}
-              </p>
-            )}
-          </div>
-          <div class="card-body flex-grow py-2 pl-4 pr-12 pt-6">
-            <h2 class={`card-title text-${section.color}-400 hover:text-${section.color}-500`}>
-              {section.title}
-            </h2>
-            <p class="p-0">{section.description}</p>
-            {(completions.value && completions.value[index]) ? (
-              <div
-                class={['radial-progress absolute right-2 top-2 scale-75', `text-${section.color}-400`]}
-                style={`--value:${completions.value[index]}; --size: 2.5rem;`}
-                role="progressbar">
-                  <span class="text-xs">{completions.value[index]}%</span>
-              </div>
-            ) : (
-              <span class="absolute left-4 bottom-3 opacity-30 text-xs">
-                {t('sections.notStarted')}
-              </span>
-            )}
-          </div>
-        </a>
-      ))}
+    <div class="flex flex-col gap-8">
+      <div class={[styles.container, 'section-link-grid', 'grid',
+        'mx-auto mt-8 px-4 gap-7', 'xl:px-10 xl:max-w-7xl',
+        'transition-all', 'max-w-6xl w-full']}>
+        {props.sections.map((section: Section, index: number) => (                   
+          <a key={section.slug}
+            href={withBase(`checklist/${section.slug}/`)}
+            class={[
+              'card card-side bg-front bg-opacity-25 shadow-md transition-all px-2 outline-none',
+              'hover:outline hover:outline-10 hover:outline-offset-4 hover:bg-opacity-15',
+              `hover:outline-${section.color}-400 hover:bg-${section.color}-600`
+            ]}
+          >
+            <div class="flex-shrink-0 flex flex-col py-4 h-auto items-stretch justify-evenly">
+              <Icon icon={section.icon || 'star'} color={section.color} />
+              {(done.value && done.value[index]) ? (
+                <p class={`text-${section.color}-400 pt-2 pb-0 px-0 mx-0 my-0`}>
+                  {done.value[index]}/{section.checklist.length} {t('sections.done')}
+                </p>
+              ) : (
+                <p class={`text-${section.color}-400 pt-2 pb-0 px-0 mx-0 my-0`}>
+                  {section.checklist.length} {t('sections.items')}
+                </p>
+              )}
+            </div>
+            <div class="card-body flex-grow py-2 pl-4 pr-12 pt-6">
+              <h2 class={`card-title text-${section.color}-400 hover:text-${section.color}-500`}>
+                {section.title}
+              </h2>
+              <p class="p-0">{section.description}</p>
+              {(completions.value && completions.value[index]) ? (
+                <div
+                  class={['radial-progress absolute right-2 top-2 scale-75', `text-${section.color}-400`]}
+                  style={`--value:${completions.value[index]}; --size: 2.5rem;`}
+                  role="progressbar">
+                    <span class="text-xs">{completions.value[index]}%</span>
+                </div>
+              ) : (
+                <span class="absolute left-4 bottom-3 opacity-30 text-xs">
+                  {t('sections.notStarted')}
+                </span>
+              )}
+            </div>
+          </a>
+        ))}
+      </div>
+      <div class="mobile-checklist md:hidden flex flex-col gap-4 mt-8">
+        {props.sections.map((section: Section, index: number) => (
+          <MobileSectionCard
+            key={`mobile-section-${section.slug}`}
+            section={section}
+            completed={(done.value && done.value[index]) || 0}
+          />
+        ))}
+      </div>
     </div>
   );
 });

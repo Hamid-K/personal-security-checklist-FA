@@ -311,7 +311,7 @@ export default component$(() => {
 
   // Beware, some god-awful markup ahead (thank Tailwind for that!)
   return (
-  <div class="flex justify-center flex-wrap items-stretch gap-6 mb-4 relative">
+  <div class="progress-section flex justify-center flex-wrap items-stretch gap-6 mb-4 relative">
     {(!ignoreDialog.value && (!Object.keys(checkedItems.value).length) ) && (
     <div class="
       px-16 py-8 top-1/3 z-10 max-w-lg
