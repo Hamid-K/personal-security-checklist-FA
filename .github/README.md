@@ -48,9 +48,13 @@ The easiest method for consuming the checklist is via our website: **[amni.at](h
 
 Here you can browse lists, filter by your threat model and tick items off once complete (plus, there are pretty charts to make you feel good about your progress ☺️).
 
+
 <p align="center">
+<img width="1293" height="1487" alt="image" src="https://github.com/user-attachments/assets/2fef351a-e246-472b-b890-c243dc4a0db8" />
 <img width="600" src="https://i.ibb.co/jzKn05H/digital-defense.png" />
 </p>
+
+
 
 ### About
 The source for the website is in [`web/`](https://github.com/hamid-k/personal-security-checklist-FA/blob/HEAD/web).<br />
