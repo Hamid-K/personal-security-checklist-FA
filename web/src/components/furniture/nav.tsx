@@ -4,6 +4,7 @@ import Icon from "~/components/core/icon";
 import type { Section } from '~/types/PSC';
 import { useTheme } from '~/store/theme-store';
 import { ChecklistContext } from '~/store/checklist-context';
+import { LocaleContext } from '~/store/locale-context';
 import LanguageToggle from '~/components/core/language-toggle';
 import { useTranslations } from '~/i18n/use-translations';
 import { withBase } from '~/utils/paths';
@@ -12,9 +13,11 @@ import { withBase } from '~/utils/paths';
 export default component$(() => {
 
   const data = useContext(ChecklistContext);
+  const { locale } = useContext(LocaleContext);
   const { t } = useTranslations();
   const deleteConfirm = t('nav.deleteConfirm');
   const sections = Array.isArray(data.value) ? data.value : [];
+  const isRTL = locale.value === 'fa';
 
   const { theme, setTheme } = useTheme();
 
@@ -55,12 +58,12 @@ export default component$(() => {
                   <Icon icon="checklist" width={16} height={16}  />
                   {t('nav.checklists')}
                 </summary>
-                <ul class="p-2 bg-base-100 rounded-t-none z-10">
+                <ul class={`p-2 bg-base-100 rounded-t-none z-10 ${isRTL ? 'rtl' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
                   {sections.map((item: Section, index: number) => (
-                    <li key={`checklist-nav-${index}`} class={`hover:bg-${item.color}-600 hover:bg-opacity-15`}>
-                      <a href={withBase(`checklist/${item.slug}/`)}>
-                      <Icon color={item.color} class="mr-2" icon={item.icon} width={16} height={16}  />
-                        {item.title}
+                    <li key={`checklist-nav-${index}`} class={`hover:bg-${item.color}-600 hover:bg-opacity-15 ${isRTL ? 'text-right' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
+                      <a href={withBase(`checklist/${item.slug}/`)} class={isRTL ? 'flex-row-reverse' : ''} dir={isRTL ? 'rtl' : 'ltr'}>
+                      <Icon color={item.color} class={isRTL ? "ml-2" : "mr-2"} icon={item.icon} width={16} height={16}  />
+                        <span class={isRTL ? 'text-right' : ''} dir={isRTL ? 'rtl' : 'ltr'}>{item.title}</span>
                       </a>
                     </li>
                   ))}

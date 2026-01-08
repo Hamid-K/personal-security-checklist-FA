@@ -55,3 +55,29 @@ html[dir="rtl"] .drawer-side .menu ul::before {
   right: 0;
   left: auto;
 }
+
+html[dir="rtl"] .navbar .menu li > details > ul {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+html[dir="rtl"] .navbar .menu li > details > ul li {
+  direction: rtl !important;
+  text-align: right !important;
+}
+
+html[dir="rtl"] .navbar .menu li > details > ul li > a {
+  direction: rtl !important;
+  text-align: right !important;
+  flex-direction: row-reverse !important;
+  justify-content: flex-start !important;
+  unicode-bidi: embed;
+}
+
+html[dir="rtl"] .navbar .menu li > details > ul li > a > span,
+html[dir="rtl"] .navbar .menu li > details > ul li > a > *:not(svg) {
+  direction: rtl !important;
+  text-align: right !important;
+  unicode-bidi: embed;
+  display: inline-block;
+}
