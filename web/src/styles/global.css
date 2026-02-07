@@ -17,7 +17,8 @@ html[lang="fa"] h6,
 html[lang="fa"] p,
 html[lang="fa"] a,
 html[lang="fa"] li,
-html[lang="fa"] span {
+html[lang="fa"] span
+html[lang="fa"] label {
   font-family: 'Vazirmatn', sans-serif;
 }
 
